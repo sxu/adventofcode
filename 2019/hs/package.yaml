@@ -1,0 +1,28 @@
+name:                aoc19
+version:             0.1.0.0
+license:             BSD3
+author:              "Shen Chen Xu"
+copyright:           "2019 Shen Chen Xu"
+
+dependencies:
+- base >= 4.7 && < 5
+- mtl
+- parsec
+- split
+- text
+- unordered-containers
+- vector
+
+library:
+  source-dirs: src
+
+executables:
+  aoc19:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - aoc19
