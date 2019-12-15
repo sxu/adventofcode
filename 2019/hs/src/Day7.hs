@@ -1,12 +1,14 @@
 module Day7 (day7) where
 
+import Control.Exception (assert)
+import Control.Monad.ST
 import Control.Monad.State
-import Data.Maybe (listToMaybe)
 import qualified Data.List as L
 import Data.List.Split (splitOn)
 import qualified Data.Vector as V
 import qualified Data.Vector.Mutable as MV
 import qualified Data.Vector.Unboxed as UV
+import qualified Data.Vector.Unboxed.Mutable as UMV
 
 import Intcode
 
@@ -26,19 +28,25 @@ data FeedbackLoopState = FeedbackLoopState
   , amplifierStates :: V.Vector (UV.Vector Int, [Int], ProgramState)
   }
 
-runFeedbackLoop :: UV.Vector Int -> Int -> [Int] -> Maybe Int
+runFeedbackLoop :: UV.Vector Int -> Int -> [Int] -> Int
 runFeedbackLoop program input [p0, p1, p2, p3, p4] =
-  listToMaybe $ evalState feedbackLoop loopState
+  head $ evalState feedbackLoop initState
   where
-    loopState = FeedbackLoopState { lastAmp = 4
+    (prg0, prg1, prg2, prg3, prg4) =
+      runST $ (,,,,) <$> copy <*> copy <*> copy <*> copy <*> copy
+      where copy :: ST s (UV.Vector Int)
+            copy = do new <- UMV.new $ UV.length program
+                      UV.copy new program
+                      UV.freeze new
+    initState = FeedbackLoopState { lastAmp = 4
                                   , nextAmp = 1
                                   , nextInputs = []
                                   , amplifierStates = V.fromList 
-                                      [ (program, [p0, input], Running 0 0)
-                                      , (program, [p1], Running 0 0)
-                                      , (program, [p2], Running 0 0)
-                                      , (program, [p3], Running 0 0)
-                                      , (program, [p4], Running 0 0)
+                                      [ (prg0, [p0, input], Running 0 0)
+                                      , (prg1, [p1], Running 0 0)
+                                      , (prg2, [p2], Running 0 0)
+                                      , (prg3, [p3], Running 0 0)
+                                      , (prg4, [p4], Running 0 0)
                                       ]
                                   }
     feedbackLoop = do
@@ -48,7 +56,8 @@ runFeedbackLoop program input [p0, p1, p2, p3, p4] =
                  Running pc' rb' -> (pc', rb')
                  WaitingForInput pc' rb' -> (pc', rb')
                  Halted -> error "unreachable"
-      let (ram', outputs, prgState') = runProgram ram pc rb (inputs ++ nxtInputs)
+      let (ram', outputs, prgState') = 
+            runProgramUnsafe ram pc rb (inputs ++ nxtInputs)
       let newAmpStates =
             V.modify (\v -> MV.write v nxt (ram', [], prgState')) ampStates
       let update s = s { nextAmp = (nxt + 1) `mod` (lst + 1)
@@ -67,8 +76,11 @@ day7 :: String -> IO ()
 day7 input = do
   let program = (UV.fromList $ map read $ splitOn "," input) :: UV.Vector Int
   let allPhases = L.permutations [0..4]
-  print $ L.maximumBy (\a b -> compare (snd a) (snd b))
-        $ map (\ps -> (ps, runAmplifiers program 0 ps)) allPhases 
+  let allRuns = map (\ps -> (ps, runAmplifiers program 0 ps)) allPhases
+  let part1@(_, s1) = L.maximumBy (\a b -> compare (snd a) (snd b)) allRuns
   let allPhases2 = L.permutations [5..9]
-  print $ L.maximumBy (\a b -> compare (snd a) (snd b))
-        $ map (\ps -> (ps, runFeedbackLoop program 0 ps)) allPhases2 
+  let allRuns2 = map (\ps -> (ps, runFeedbackLoop program 0 ps)) allPhases2 
+  let part2@(_, s2) = L.maximumBy (\a b -> compare (snd a) (snd b)) allRuns2
+  assert (s1 == 206580 && s2 == 2299406) $ return ()
+  print part1
+  print part2

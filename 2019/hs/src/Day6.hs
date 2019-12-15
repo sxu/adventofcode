@@ -2,6 +2,7 @@
 
 module Day6 (day6) where
 
+import Control.Exception (assert)
 import Control.Monad.State
 import qualified Data.HashMap.Strict as H
 import qualified Data.Text as T
@@ -44,7 +45,7 @@ numOrbits mass = fst $ go mass
             recOrbits = sum os
             numMasses = sum ms
 
-data Transfer = Partial Int | Complete Int | NA deriving (Show)
+data Transfer = Partial Int | Complete Int | NA deriving (Show, Eq)
 
 numTransfers :: T.Text -> T.Text -> Mass -> Transfer
 numTransfers x y (Mass name satellites)
@@ -64,8 +65,11 @@ day6 input =
     Left err -> print err
     Right orbits -> do
       let system = buildSystem orbits
-      print $ numOrbits system
-      print $ numTransfers "YOU" "SAN" system
+      let part1 = numOrbits system
+      let part2 = numTransfers "YOU" "SAN" system
+      assert (part1 == 171213 && part2 == Complete 292) $ return ()
+      print part1
+      print part2
   where
     parseOrbit = do
       parent <- parseMass

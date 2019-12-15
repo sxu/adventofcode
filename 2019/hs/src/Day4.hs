@@ -1,5 +1,6 @@
 module Day4 (day4) where 
 
+import Control.Exception (assert)
 import Data.List.Split (splitOn)
 import Data.Monoid (All(..))
 
@@ -27,9 +28,16 @@ day4 input = do
   (lo, hi) <- case splitOn "-" line of
                 [x, y] -> return ((read x, read y) :: (Int, Int))
                 _ -> fail $ "Bad input: " ++ line
-  print $ sum
-        $ map (fromEnum . isValid [hasRepeats, increasingDigits] . show)
-              [lo..hi]
-  print $ sum
-        $ map (fromEnum . isValid [hasExactRepeats, increasingDigits] . show)
-              [lo..hi]
+  let part1 = sum $ map ( fromEnum
+                        . isValid [hasRepeats, increasingDigits]
+                        . show
+                        )
+                        [lo..hi]
+  let part2 = sum $ map ( fromEnum
+                        . isValid [hasExactRepeats, increasingDigits]
+                        . show
+                        )
+                        [lo..hi]
+  assert (part1 == 1955 && part2 == 1319) $ return ()
+  print part1
+  print part2

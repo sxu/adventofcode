@@ -1,5 +1,7 @@
 module Day1 (day1) where
 
+import Control.Exception (assert)
+
 fuel :: Int -> Int
 fuel mass = mass `div` 3 - 2
 
@@ -14,5 +16,8 @@ fuelRec = go 0
 day1 :: String -> IO ()
 day1 input = do
   let ls = lines input
-  print $ sum $ map (fuel . read) ls
-  print $ sum $ map (fuelRec . read) ls
+  let part1 = sum $ map (fuel . read) ls
+  let part2 = sum $ map (fuelRec . read) ls
+  assert (part1 == 3455717 && part2 == 5180690) $ return ()
+  print part1
+  print part2

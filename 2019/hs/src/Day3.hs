@@ -2,6 +2,7 @@
 
 module Day3 (day3) where
 
+import Control.Exception (assert)
 import Control.Monad.State
 import Data.Functor
 import qualified Data.Text as T
@@ -112,5 +113,8 @@ day3 input = do
   case costs of
     Left err -> print err
     Right cs -> do
-      print $ minimum $ map fst cs
-      print $ minimum $ map snd cs
+      let part1 = minimum $ map fst cs
+      let part2 = minimum $ map snd cs
+      assert (part1 == 870 && part2 == 13698) $ return ()
+      print part1
+      print part2

@@ -1,4 +1,5 @@
 .stack-work/
+stack.yaml.lock
 aoc19.cabal
 *~
 *.swp
