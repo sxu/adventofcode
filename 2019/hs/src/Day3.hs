@@ -5,7 +5,6 @@ module Day3 (day3) where
 import Control.Monad.State
 import Data.Functor
 import qualified Data.Text as T
-import qualified Data.Text.IO as T
 import qualified Text.Parsec as P
 import qualified Text.Parsec.Text as P
 import Text.Read (readMaybe)
@@ -82,9 +81,7 @@ intersections seg1 seg2 = filter (/= Point 0 0) $ go seg1 seg2
             start2 = min (getEnd qStart) (getEnd qEnd)
             end2 = max (getEnd qStart) (getEnd qEnd)
     goPerpendicular (Horizontal h1 h2) (Vertical v1 v2) =
-      if vX < hStart || vX > hEnd || hY < vStart || hY > vEnd
-      then []
-      else [Point vX hY]
+      [Point vX hY | not (vX < hStart || vX > hEnd || hY < vStart || hY > vEnd)]
       where vX = xCoord v1
             hY = yCoord h1
             hStart = min (xCoord h1) (xCoord h2)

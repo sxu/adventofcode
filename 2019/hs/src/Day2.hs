@@ -16,7 +16,7 @@ runProgramWithNV noun verb program = runST $ do
   MV.write thawed 1 noun
   MV.write thawed 2 verb
   modified <- V.unsafeFreeze thawed
-  let (ram, _, Halted) = runProgram modified 0 []
+  let (ram, _, Halted) = runProgram modified 0 0 []
   return ram
 
 desiredOutput :: Int

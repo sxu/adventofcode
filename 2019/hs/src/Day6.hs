@@ -5,7 +5,6 @@ module Day6 (day6) where
 import Control.Monad.State
 import qualified Data.HashMap.Strict as H
 import qualified Data.Text as T
-import qualified Data.Text.IO as T
 import qualified Text.Parsec as P hiding (State)
 
 data Mass = Mass T.Text[Mass] deriving (Show)
@@ -60,7 +59,7 @@ numTransfers x y (Mass name satellites)
         found _ = True
            
 day6 :: String -> IO ()
-day6 input = do
+day6 input =
   case P.parse (parseOrbit `P.sepEndBy` P.endOfLine) "" (T.pack input) of
     Left err -> print err
     Right orbits -> do
