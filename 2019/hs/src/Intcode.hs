@@ -16,7 +16,7 @@ data Instruction = Instruction { opcode :: Int
 
 data InputOutput = InputOutput
                  { programInputs :: [Int]
-                 , programOutputs :: [Int]
+                 , programOutputs :: [Int] -> [Int]
                  }
 
 data ProgramState = Running Int Int
@@ -54,9 +54,10 @@ runProgram' :: Bool
             -> (V.Vector Int, [Int], ProgramState)
 runProgram' safe program pc' rb' inputs = runST $ do
   thawed <- if safe then V.thaw program else V.unsafeThaw program
-  ((ram, prgState), io) <- runStateT (run thawed pc' rb') $ InputOutput inputs []
+  ((ram, prgState), io) <- runStateT (run thawed pc' rb')
+                                     (InputOutput inputs id)
   frozen <- V.unsafeFreeze ram
-  return (frozen, programOutputs io, prgState)
+  return (frozen, programOutputs io [], prgState)
 
 run :: MV.MVector s Int
     -> Int
@@ -93,7 +94,7 @@ run ram pc rb = do
             Nothing -> return $ WaitingForInput pc rb
         4 -> do
           output <- getOperand (pc + 1) (mode1 instruction)
-          modify $ \io -> io { programOutputs = output : programOutputs io }
+          modify $ \io -> io { programOutputs = programOutputs io . (output:) }
           return $ Running (pc + 2) rb
         5 -> runJump instruction (/= 0)
         6 -> runJump instruction (== 0)

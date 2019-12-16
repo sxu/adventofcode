@@ -7,6 +7,7 @@ copyright:           "2019 Shen Chen Xu"
 dependencies:
 - base >= 4.7 && < 5
 - hashable
+- lens
 - mtl
 - parsec
 - split

@@ -1,7 +1,6 @@
 module Day8 (day8) where
 
 import Control.Applicative
-import Control.Exception (assert)
 import Control.Monad
 import Data.List
 
@@ -13,7 +12,7 @@ day8 input = do
   let (layer, _) = minimumBy (\x y -> compare (snd x) (snd y))
                  $ map (\l -> (l, numOf 0 l)) layers
   let part1 = numOf 1 layer * numOf 2 layer
-  assert (part1 == 1548) $ print part1
+  guard (part1 == 1548)
   let rendered = getZipList $ foldl1' (liftA2 overlay) $ map ZipList layers
   let rows = everyN width rendered
   forM_ rows $ \row -> forM_ row (\p -> putStr $ if p == 1 then "#" else " ")

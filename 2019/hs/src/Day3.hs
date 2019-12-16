@@ -2,7 +2,6 @@
 
 module Day3 (day3) where
 
-import Control.Exception (assert)
 import Control.Monad.State
 import Data.Functor
 import qualified Data.Text as T
@@ -115,6 +114,6 @@ day3 input = do
     Right cs -> do
       let part1 = minimum $ map fst cs
       let part2 = minimum $ map snd cs
-      assert (part1 == 870 && part2 == 13698) $ return ()
+      guard (part1 == 870 && part2 == 13698)
       print part1
       print part2

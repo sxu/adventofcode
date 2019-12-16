@@ -1,6 +1,5 @@
 module Day7 (day7) where
 
-import Control.Exception (assert)
 import Control.Monad.ST
 import Control.Monad.State
 import qualified Data.List as L
@@ -61,13 +60,13 @@ runFeedbackLoop program input [p0, p1, p2, p3, p4] =
       let newAmpStates =
             V.modify (\v -> MV.write v nxt (ram', [], prgState')) ampStates
       let update s = s { nextAmp = (nxt + 1) `mod` (lst + 1)
-                       , nextInputs = reverse outputs
+                       , nextInputs = outputs
                        , amplifierStates = newAmpStates
                        }
       case prgState' of
         WaitingForInput _ _ -> modify update >> feedbackLoop
         Halted -> if nxt == lst
-                  then return $ reverse outputs
+                  then return outputs
                   else modify update >> feedbackLoop
         Running _ _ -> error "unreachable"
 runFeedbackLoop _ _ _ = error "need exactly 5 phases"
@@ -81,6 +80,6 @@ day7 input = do
   let allPhases2 = L.permutations [5..9]
   let allRuns2 = map (\ps -> (ps, runFeedbackLoop program 0 ps)) allPhases2 
   let part2@(_, s2) = L.maximumBy (\a b -> compare (snd a) (snd b)) allRuns2
-  assert (s1 == 206580 && s2 == 2299406) $ return ()
+  guard (s1 == 206580 && s2 == 2299406)
   print part1
   print part2

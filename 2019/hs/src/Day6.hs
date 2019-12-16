@@ -2,7 +2,6 @@
 
 module Day6 (day6) where
 
-import Control.Exception (assert)
 import Control.Monad.State
 import qualified Data.HashMap.Strict as H
 import qualified Data.Text as T
@@ -67,7 +66,7 @@ day6 input =
       let system = buildSystem orbits
       let part1 = numOrbits system
       let part2 = numTransfers "YOU" "SAN" system
-      assert (part1 == 171213 && part2 == Complete 292) $ return ()
+      guard (part1 == 171213 && part2 == Complete 292)
       print part1
       print part2
   where

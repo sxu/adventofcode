@@ -1,6 +1,6 @@
 module Day4 (day4) where 
 
-import Control.Exception (assert)
+import Control.Monad (guard)
 import Data.List.Split (splitOn)
 import Data.Monoid (All(..))
 
@@ -38,6 +38,6 @@ day4 input = do
                         . show
                         )
                         [lo..hi]
-  assert (part1 == 1955 && part2 == 1319) $ return ()
+  guard (part1 == 1955 && part2 == 1319)
   print part1
   print part2

@@ -1,6 +1,6 @@
-module Day10 where
+module Day10 (day10) where
 
-import Control.Exception (assert)
+import Control.Monad (guard)
 import Data.List (groupBy, maximumBy, sortBy)
 import qualified Data.HashSet as S
 
@@ -74,8 +74,7 @@ day10 input = do
                                   $ S.toList coords
   let vaporized = map asteroidLocation $ vaporizations coords
                                                        (stationLocation best)
-  assert (numAsteroidsInSight best == 230 && vaporized !! 199 == (12, 5)) 
-         (return ())
+  guard (numAsteroidsInSight best == 230 && vaporized !! 199 == (12, 5))
   print best
   print $ vaporized !! 199
   where

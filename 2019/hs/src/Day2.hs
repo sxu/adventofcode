@@ -2,7 +2,7 @@
 
 module Day2 (day2) where
 
-import Control.Exception (assert)
+import Control.Monad (guard)
 import Control.Monad.ST
 import Data.List
 import Data.List.Split
@@ -30,6 +30,6 @@ day2 input = do
   let part2 =
         find (\(n, v) -> runProgramWithNV n v program V.! 0 == desiredOutput)
              [(n, v) | n <- [0..99], v <- [0..99]]
-  assert (part1 == 5290681 && part2 == Just (57, 41)) $ return ()
+  guard (part1 == 5290681 && part2 == Just (57, 41))
   print part1
   print part2
