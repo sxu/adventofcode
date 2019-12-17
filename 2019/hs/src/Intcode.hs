@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+
 module Intcode (runProgram, runProgramUnsafe, ProgramState(..)) where
 
 import Control.Monad.Except

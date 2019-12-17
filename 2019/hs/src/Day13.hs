@@ -4,7 +4,6 @@ import Control.Monad.State
 import qualified  Data.HashMap.Strict as H
 import Data.List.Split (splitOn)
 import qualified Data.Vector.Unboxed as V
-import System.IO
 
 import Intcode
 
@@ -63,7 +62,6 @@ play ram (WaitingForInput pc rb) = do
 
 day13 :: String -> IO ()
 day13 input = do
-  hSetBuffering stdout NoBuffering
   let code = (map read $ splitOn "," input) :: [Int]
   let (_, outputs, _) = runProgram (V.fromList code) 0 0 []
   let numBlocks = countBlocks outputs :: Int
