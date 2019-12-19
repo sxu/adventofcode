@@ -4,6 +4,7 @@ import Control.Monad
 import qualified Data.HashMap.Strict as H
 import qualified Data.HashSet as S
 import Data.List.Split (splitOn)
+import Data.Maybe (maybeToList)
 import qualified Data.Vector.Unboxed as V
 
 import Intcode
@@ -49,41 +50,53 @@ drawMap ram (WaitingForInput pc rb) pos roomMap =
         (ram', outputs, prgState) = runProgram ram pc rb [1 + fromEnum dir]
         newPos = followDir dir pos
 
+type SearchState = ((Int, Int), Int, Direction)
+
 findOxygen :: H.HashMap (Int, Int) LocationType
            -> S.HashSet (Int, Int)
-           -> [((Int, Int), Int, Direction)]
+           -> [SearchState]
            -> Maybe Int
 findOxygen _ _ [] = Nothing
-findOxygen roomMap visited ((pos, dis, dir):queue) =
+findOxygen roomMap visited (st@(pos, dis, dir):rest) =
   case H.lookup newPos roomMap of
     Just Oxygen -> Just $ dis + 1
     Just Empty -> findOxygen roomMap
                              (S.insert newPos visited)
-                             (queue' ++ newQueue)
-    Nothing -> findOxygen roomMap visited queue'
+                             (newQueue ++ maybeToList mbNewSearch)
+    Nothing -> findOxygen roomMap visited newQueue
   where
     newPos = followDir dir pos
-    queue' = if dir == maxBound then queue else (pos, dis, succ dir):queue
-    newQueue = [(newPos, dis + 1, minBound) | not (S.member newPos visited)]
+    newQueue = updateBfsQueue st rest
+    mbNewSearch = newSearchState newPos (dis + 1) visited
 
 fillOxygen :: H.HashMap (Int, Int) LocationType
            -> S.HashSet (Int, Int)
            -> Int
-           -> [((Int, Int), Int, Direction)]
+           -> [SearchState]
            -> Int
 fillOxygen _ _ maxDis [] = maxDis
-fillOxygen roomMap visited maxDis ((pos, dis, dir):queue) =
+fillOxygen roomMap visited maxDis (st@(pos, dis, dir):rest) =
   case H.lookup newPos roomMap of
     Just _ -> fillOxygen roomMap
                          (S.insert newPos visited)
                          newMax
-                         (queue' ++ newQueue)
-    Nothing -> fillOxygen roomMap visited newMax queue'
+                         (newQueue ++ maybeToList mbNewSearch)
+    Nothing -> fillOxygen roomMap visited newMax newQueue
   where
-    newMax = max maxDis dis
     newPos = followDir dir pos
-    queue' = if dir == maxBound then queue else (pos, dis, succ dir):queue
-    newQueue = [(newPos, dis + 1, minBound) | not (S.member newPos visited)]
+    newMax = max maxDis dis
+    newQueue = updateBfsQueue st rest
+    mbNewSearch = newSearchState newPos (dis + 1) visited
+
+updateBfsQueue :: ((Int, Int), Int, Direction)
+               -> [SearchState]
+               -> [SearchState]
+updateBfsQueue (pos, dis, dir) queue = 
+  if dir == maxBound then queue else (pos, dis, succ dir) : queue
+
+newSearchState :: (Int, Int) -> Int -> S.HashSet (Int, Int) -> Maybe SearchState
+newSearchState newPos newDis visited =
+  if S.member newPos visited then Nothing else Just (newPos, newDis, minBound)
 
 day15 :: String -> IO ()
 day15 input = do

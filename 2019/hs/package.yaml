@@ -7,7 +7,9 @@ copyright:           "2019 Shen Chen Xu"
 dependencies:
 - base >= 4.7 && < 5
 - dequeue
+- deepseq
 - hashable
+- hmatrix
 - lens
 - mtl
 - parsec
@@ -20,6 +22,7 @@ library:
   source-dirs: src
   ghc-options:
   - -Wall
+  - -O3
 
 executables:
   aoc19:
