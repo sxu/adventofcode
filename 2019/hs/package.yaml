@@ -6,6 +6,7 @@ copyright:           "2019 Shen Chen Xu"
 
 dependencies:
 - base >= 4.7 && < 5
+- containers
 - dequeue
 - deepseq
 - hashable
@@ -13,6 +14,7 @@ dependencies:
 - lens
 - mtl
 - parsec
+- psqueues
 - split
 - text
 - unordered-containers
