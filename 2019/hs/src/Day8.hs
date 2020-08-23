@@ -15,6 +15,7 @@ day8 input = do
   guard (part1 == 1548)
   let rendered = getZipList $ foldl1' (liftA2 overlay) $ map ZipList layers
   let rows = everyN width rendered
+  putStrLn ""
   forM_ rows $ \row -> forM_ row (\p -> putStr $ if p == 1 then "#" else " ")
                     >> putStr "\n"
   where

@@ -61,7 +61,9 @@ maximizeFuel recipe ore = go
     go lo hi
       | lo == hi = lo
       | otherwise = let target = (lo + hi) `div` 2 + 1
-                    in if canProduce target then go target hi else go lo (target - 1)
+                    in if canProduce target
+                       then go target hi
+                       else go lo (target - 1)
     canProduce target =
       fromMaybe (error "") (H.lookup "ORE" balance) >= 0
       where
@@ -75,7 +77,7 @@ day14 input = do
                        ""
                        (T.pack input)
   case parsed of
-    Left err -> print err
+    Left err -> fail $ show err
     Right rs -> do
       let recipe = mconcat rs
       let balance = produce recipe
@@ -83,8 +85,6 @@ day14 input = do
                             (H.singleton "FUEL" (-1))
       let ore = fromMaybe (error "") $ H.lookup "ORE" balance
       guard (-ore == 857266)
-      print (-ore)
       let minFuel = 1000000000000 `div` (-ore)
       let fuel = maximizeFuel recipe 1000000000000 minFuel (minFuel * 2)
       guard (fuel == 2144702)
-      print fuel

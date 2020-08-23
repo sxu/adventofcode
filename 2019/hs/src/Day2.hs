@@ -31,5 +31,3 @@ day2 input = do
         find (\(n, v) -> runProgramWithNV n v program V.! 0 == desiredOutput)
              [(n, v) | n <- [0..99], v <- [0..99]]
   guard (part1 == 5290681 && part2 == Just (57, 41))
-  print part1
-  print part2

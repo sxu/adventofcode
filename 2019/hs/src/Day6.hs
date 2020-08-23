@@ -61,14 +61,12 @@ numTransfers x y (Mass name satellites)
 day6 :: String -> IO ()
 day6 input =
   case P.parse (parseOrbit `P.sepEndBy` P.endOfLine) "" (T.pack input) of
-    Left err -> print err
+    Left err -> fail $ show err
     Right orbits -> do
       let system = buildSystem orbits
       let part1 = numOrbits system
       let part2 = numTransfers "YOU" "SAN" system
       guard (part1 == 171213 && part2 == Complete 292)
-      print part1
-      print part2
   where
     parseOrbit = do
       parent <- parseMass

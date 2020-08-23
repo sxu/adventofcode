@@ -90,7 +90,6 @@ day17 input = do
   let (_, outputs, _) = runProgram (V.fromList program) 0 0 []
   let view = map chr outputs
   let (scaffolds, rs) = parseView view
-  let (pos, dir) = head rs
   let part1 = sum $ map (uncurry (*)) $ S.toList $ findIntersections scaffolds
   guard (part1 == 4044)
   let mainRoutine = "A,B,A,C,A,B,C,B,C,B"
@@ -102,6 +101,5 @@ day17 input = do
         runProgram (V.fromList $ 2 : tail program) 0 0 $ map ord inputs
   let part2 = last outputs2
   guard (part2 == 893283)
-  print part1
-  print $ walkScaffolds scaffolds pos dir
-  print part2
+  -- let (pos, dir) = head rs
+  -- print $ walkScaffolds scaffolds pos dir

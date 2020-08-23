@@ -12,5 +12,3 @@ day9 input = do
   let (_, outputs, prgState) = runProgram program 0 0 [1]
   let (_, outputs2, prgState2) = runProgram program 0 0 [2]
   guard (outputs == [3429606717] && outputs2 == [33679])
-  print (prgState, outputs)
-  print (prgState2, outputs2)

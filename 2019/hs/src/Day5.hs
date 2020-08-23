@@ -12,5 +12,3 @@ day5 input = do
   let (_, outputs1, Halted) = runProgram program 0 0 [1]
   let (_, outputs2, Halted) = runProgram program 0 0 [5]
   guard (last outputs1 == 13285749 && last outputs2 == 5000972)
-  print outputs1
-  print outputs2

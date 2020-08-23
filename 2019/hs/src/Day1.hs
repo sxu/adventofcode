@@ -19,5 +19,3 @@ day1 input = do
   let part1 = sum $ map (fuel . read) ls
   let part2 = sum $ map (fuelRec . read) ls
   guard (part1 == 3455717 && part2 == 5180690)
-  print part1
-  print part2

@@ -36,6 +36,7 @@ main = do
 
 runDay :: Int -> IO ()
 runDay day = do
-  print $ "Day " ++ (show day)
+  putStr $ "Day " ++ (show day) ++ "..."
   input <- readFile $ "../input" ++ show day
   (days !! (day - 1)) input
+  putStrLn $ " OK"

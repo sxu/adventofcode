@@ -75,7 +75,5 @@ day10 input = do
   let vaporized = map asteroidLocation $ vaporizations coords
                                                        (stationLocation best)
   guard (numAsteroidsInSight best == 230 && vaporized !! 199 == (12, 5))
-  print best
-  print $ vaporized !! 199
   where
     cmpStation s1 s2 = compare (numAsteroidsInSight s1) (numAsteroidsInSight s2)

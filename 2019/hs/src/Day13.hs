@@ -66,10 +66,9 @@ day13 input = do
   let (_, outputs, _) = runProgram (V.fromList code) 0 0 []
   let numBlocks = countBlocks outputs :: Int
   guard (numBlocks == 247)
-  print numBlocks
   let end = execState (play (V.fromList (2 : tail code)) $ Running 0 0) 
                       (GameState H.empty 0 (0, 0) (0, 0))
-  print $ gameScore end
+  guard (gameScore end == 12954)
   where
     countBlocks = go 0
       where go count (_:_:2:os) = go (count + 1) os

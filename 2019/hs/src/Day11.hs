@@ -83,9 +83,9 @@ day11 input = do
   let RobotState _ _ panels1 = execState (robot program (Running 0 0)) 
                                          (RobotState (0, 0) Up H.empty)
   guard (H.size panels1 == 1967)
-  print $ H.size panels1
   let RobotState _ _ panels2 = execState (robot program (Running 0 0)) 
                                          (RobotState (0, 0)
                                                      Up 
                                                      (H.singleton (0, 0) 1))
+  putStrLn ""
   paintPanels panels2

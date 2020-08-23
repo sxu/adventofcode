@@ -76,10 +76,8 @@ day7 input = do
   let program = (UV.fromList $ map read $ splitOn "," input) :: UV.Vector Int
   let allPhases = L.permutations [0..4]
   let allRuns = map (\ps -> (ps, runAmplifiers program 0 ps)) allPhases
-  let part1@(_, s1) = L.maximumBy (\a b -> compare (snd a) (snd b)) allRuns
+  let (_, s1) = L.maximumBy (\a b -> compare (snd a) (snd b)) allRuns
   let allPhases2 = L.permutations [5..9]
   let allRuns2 = map (\ps -> (ps, runFeedbackLoop program 0 ps)) allPhases2 
-  let part2@(_, s2) = L.maximumBy (\a b -> compare (snd a) (snd b)) allRuns2
+  let (_, s2) = L.maximumBy (\a b -> compare (snd a) (snd b)) allRuns2
   guard (s1 == 206580 && s2 == 2299406)
-  print part1
-  print part2

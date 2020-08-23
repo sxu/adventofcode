@@ -37,14 +37,11 @@ day16 :: String -> IO ()
 day16 input = do
   let (input':_) = lines input
   let signal = map (\c -> ord c - ord '0') input'
-  print $ length signal
   let part1 = UV.toList $ UV.take 8 $ fft (UV.fromList signal) 100
   guard (part1 == [5, 9, 5, 2, 2, 4, 2, 2])
-  print part1
   let offset = read (take 7 input') :: Int
   let realSignal = take (length signal * 10000) $ cycle signal
   let part2 = UV.toList $ UV.take 8
                         $ UV.drop offset
                         $ fft (UV.fromList realSignal) 100
   guard (part2 == [1, 8, 6, 5, 0, 8, 3, 4])
-  print part2

@@ -110,5 +110,3 @@ day15 input = do
                               0
                               [(o2Pos, 0, minBound)]
   guard (timeToFill == 350)
-  print disToO2
-  print timeToFill

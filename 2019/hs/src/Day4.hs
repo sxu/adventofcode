@@ -39,5 +39,3 @@ day4 input = do
                         )
                         [lo..hi]
   guard (part1 == 1955 && part2 == 1319)
-  print part1
-  print part2

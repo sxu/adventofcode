@@ -69,11 +69,10 @@ findCycle [] _ _ = error "unreachable"
 day12 :: String -> IO ()
 day12 input =
   case P.parse (parseMoon `P.sepEndBy` P.endOfLine) "" $ T.pack input of
-    Left err -> print err
+    Left err -> fail $ show err
     Right moons -> do
       let energy = totalEnergy $ iterate simulateOneStep moons !! 1000
       guard (energy == 6423)
-      print energy
       case transpose $ map getZipList moons of
         [xs, ys, zs] -> do
           let (x1, x2) = findCycle (iterate simulateOneStep1D xs) H.empty 0
@@ -81,5 +80,4 @@ day12 input =
           let (z1, z2) = findCycle (iterate simulateOneStep1D zs) H.empty 0
           let period = lcm (x2 - x1) $ lcm (y2 - y1) (z2 - z1)
           guard (period == 327636285682704 && x1 == 0 && y1 == 0 && z1 == 0)
-          print period
         _ -> error "unreachable"
