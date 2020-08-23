@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 1c222b6f7a72b69af8115d7c54c295da55c97f1d
 def run(ram, pc):
     while True:
         opcode = ram[pc]

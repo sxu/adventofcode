@@ -113,11 +113,7 @@ class State(object):
 
 def dijkstra(vault, start_state, num_keys):
     max_ = 0
-<<<<<<< HEAD
     tie_breaker = itertools.count()
-=======
-    tie_breaker = itertools.count() 
->>>>>>> 1c222b6f7a72b69af8115d7c54c295da55c97f1d
     queue = [[0, next(tie_breaker), start_state]]
     state_to_entry = {}
     visited = set()
