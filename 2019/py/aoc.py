@@ -10,7 +10,7 @@ def main():
     day1("../input1")
     day2("../input2")
     day3("../input3")
-    # day18("../input18")
+    day18("../input18")
 
 
 if __name__ == "__main__":
