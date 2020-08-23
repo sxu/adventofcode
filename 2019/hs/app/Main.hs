@@ -30,7 +30,12 @@ main :: IO ()
 main = do
   argv <- getArgs
   case argv of
-    [] -> print "USAGE: aoc19 [DAY]"
+    [] -> sequence_ $ map runDay [1..18]
     argv' -> do let day = (read $ head argv') :: Int
-                input <- readFile $ "../input" ++ show day
-                (days !! (day - 1)) input
+                runDay day
+
+runDay :: Int -> IO ()
+runDay day = do
+  print $ "Day " ++ (show day)
+  input <- readFile $ "../input" ++ show day
+  (days !! (day - 1)) input

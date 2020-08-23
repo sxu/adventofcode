@@ -59,7 +59,7 @@ performActions (color:turnDir:outputs) = do
     advance (x, y) Dn = (x, y - 1)
     advance (x, y) Lf = (x - 1, y)
     advance (x, y) Rt = (x + 1, y)
-performActions _ = fail "unreachable"
+performActions _ = error "unreachable"
 
 paintPanels :: H.HashMap (Int, Int) Int -> IO ()
 paintPanels panels = do
