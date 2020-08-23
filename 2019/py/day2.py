@@ -4,7 +4,10 @@ import numpy as np
 
 import intcode
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1c222b6f7a72b69af8115d7c54c295da55c97f1d
 def day2(input_path):
     with open(input_path) as f:
         rom = np.ascontiguousarray(list(map(int, f.read().split(","))))
@@ -16,7 +19,10 @@ def day2(input_path):
     assert ram[0] == 5290681
     assert search(rom) == 5741
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1c222b6f7a72b69af8115d7c54c295da55c97f1d
 def search(rom):
     for noun in range(100):
         for verb in range(100):
