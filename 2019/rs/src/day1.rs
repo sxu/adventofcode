@@ -3,14 +3,15 @@ use std::fs::File;
 use std::io::{self, BufRead};
 
 pub fn day1(input_path: &str) {
-    let file = File::open(input_path).expect("Failed to open input file");
+    let file =
+        File::open(input_path).unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e));
     let weights = io::BufReader::new(file)
         .lines()
         .map(|l| {
-            l.expect("Failed to read line")
+            l.unwrap_or_else(|e| panic!("Failed to read line: {}", e))
                 .trim()
                 .parse::<i32>()
-                .expect("Failed to parse weight")
+                .unwrap_or_else(|e| panic!("Failed to parse integer {}", e))
         })
         .collect::<Vec<i32>>();
     assert_eq!(
