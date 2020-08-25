@@ -1,4 +1,5 @@
 {-# LANGUAGE BlockArguments #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Day3 (day3) where
 
@@ -40,16 +41,14 @@ parsePiece = do
         Just v -> return v
 
 followDirections :: [Piece] -> [(Segment, Int)]
-followDirections dirs = evalState (go dirs) (Point 0 0, 0) []
+followDirections dirs = evalState (go dirs id) (Point 0 0, 0)
   where
-    go :: [Piece] -> State (Point, Int) ([(Segment, Int)] -> [(Segment, Int)])
-    go [] = return id
-    go (d:ds) = do
+    go [] acc = return $ acc []
+    go (d:ds) acc = do
       (cur, dis) <- get
       let (new, seg) = follow d cur
       put (new, dis + segLength seg)
-      rest <- go ds
-      return $ ((seg, dis):) . rest
+      go ds (acc . ((seg, dis):))
     follow (Up dis) p@(Point x y) = (new, Vertical p new)
       where new = Point x (y + dis)
     follow (Dn dis) p@(Point x y) = (new, Vertical p new)
