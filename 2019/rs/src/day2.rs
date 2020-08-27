@@ -11,8 +11,9 @@ pub fn day2(input_path: &str) {
     let mut ram = rom.clone();
     ram[1] = 12;
     ram[2] = 2;
-    intcode::run(&mut ram);
-    assert_eq!(ram[0], 5290681);
+    let mut computer = intcode::Computer::new(ram);
+    computer.run();
+    assert_eq!(computer.ram[0], 5290681);
 
     let mut noun = None::<i32>;
     let mut verb = None::<i32>;
@@ -21,8 +22,9 @@ pub fn day2(input_path: &str) {
             let mut ram = rom.clone();
             ram[1] = n;
             ram[2] = v;
-            intcode::run(&mut ram);
-            if ram[0] == 19690720 {
+            let mut computer = intcode::Computer::new(ram);
+            computer.run();
+            if computer.ram[0] == 19690720 {
                 noun = Some(n);
                 verb = Some(v);
             }
