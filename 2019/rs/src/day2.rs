@@ -10,8 +10,8 @@ pub fn day2(input_path: &str) {
     computer.run();
     assert_eq!(computer.ram[0], 5290681);
 
-    let mut noun = None::<i32>;
-    let mut verb = None::<i32>;
+    let mut noun = None::<i64>;
+    let mut verb = None::<i64>;
     for n in 0..100 {
         for v in 0..100 {
             let mut ram = rom.clone();

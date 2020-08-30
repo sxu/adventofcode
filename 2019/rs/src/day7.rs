@@ -5,7 +5,7 @@ use std::collections::VecDeque;
 pub fn day7(input_path: &str) {
     let rom = intcode::load_program(input_path);
 
-    let mut max_thrust = i32::MIN;
+    let mut max_thrust = i64::MIN;
     for phases in (0..5).permutations(5) {
         let mut amps = set_up_amps(&rom, &phases);
         let mut first_signal = VecDeque::from(vec![0]);
@@ -23,7 +23,7 @@ pub fn day7(input_path: &str) {
     }
     assert_eq!(max_thrust, 206580);
 
-    let mut max_thrust = i32::MIN;
+    let mut max_thrust = i64::MIN;
     for phases in (5..10).permutations(5) {
         let mut amps = set_up_amps(&rom, &phases);
         amps[4].outputs.push_back(0);
@@ -47,7 +47,7 @@ pub fn day7(input_path: &str) {
     assert_eq!(max_thrust, 2299406);
 }
 
-fn set_up_amps(rom: &Vec<i32>, phases: &[i32]) -> [intcode::Computer; 5] {
+fn set_up_amps(rom: &Vec<i64>, phases: &[i64]) -> [intcode::Computer; 5] {
     let mut amps = [
         intcode::Computer::new(rom.clone()),
         intcode::Computer::new(rom.clone()),
