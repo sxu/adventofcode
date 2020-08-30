@@ -1,4 +1,5 @@
 mod day1;
+mod day19;
 mod day2;
 mod day3;
 mod day4;
@@ -32,7 +33,7 @@ fn main() {
         stub, // day16::day16,
         stub, // day17::day17,
         stub, // day18::day18,
-        stub, // day19::day19,
+        day19::day19,
     ];
     let args: Vec<String> = env::args().collect();
     if args.len() > 1 {
