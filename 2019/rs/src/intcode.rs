@@ -39,7 +39,7 @@ impl Computer {
     #[inline]
     pub fn new(ram: Vec<i64>) -> Computer {
         Computer {
-            ram: ram,
+            ram,
             outputs: VecDeque::new(),
             state: State::Running,
             pc: 0,

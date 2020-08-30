@@ -1,4 +1,5 @@
 mod day1;
+mod day11;
 mod day19;
 mod day2;
 mod day3;
@@ -6,12 +7,15 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 mod day9;
 mod intcode;
 
 use std::env;
 
-fn stub(_input_path: &str) {}
+fn stub(_input_path: &str) {
+    println!(" Not implemented.");
+}
 
 fn main() {
     let days = [
@@ -22,10 +26,10 @@ fn main() {
         day5::day5,
         day6::day6,
         day7::day7,
-        stub, // day8::day8,
+        day8::day8,
         day9::day9,
         stub, // day10::day10,
-        stub, // day11::day11,
+        day11::day11,
         stub, // day12::day12,
         stub, // day13::day13,
         stub, // day14::day14,

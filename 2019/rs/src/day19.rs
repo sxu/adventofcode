@@ -22,7 +22,7 @@ pub fn day19(input_path: &str) {
     let mut search_region: VecDeque<Option<(usize, usize)>> = VecDeque::with_capacity(100);
     for y in 0..100 {
         let search_start = search_region.back().map_or(0, |x| x.map_or(0, |x| x.0));
-        search_region.push_back(find_x_range(rom.clone(), y, search_start));
+        search_region.push_back(find_x_range(&rom, y, search_start));
     }
 
     let mut closest = None;
@@ -45,12 +45,12 @@ pub fn day19(input_path: &str) {
         }
         search_region.pop_front();
         let search_start = search_region.back().unwrap().map_or(0, |x| x.0);
-        search_region.push_back(find_x_range(rom.clone(), y + 100, search_start));
+        search_region.push_back(find_x_range(&rom, y + 100, search_start));
     }
     assert_eq!(closest, Some((1073, 411)));
 }
 
-fn find_x_range(rom: Vec<i64>, y: usize, x_start: usize) -> Option<(usize, usize)> {
+fn find_x_range(rom: &Vec<i64>, y: usize, x_start: usize) -> Option<(usize, usize)> {
     // TODO: use binary search/doubling stride
     let mut iter = (x_start..10000)
         .map(|x| {
