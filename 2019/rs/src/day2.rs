@@ -1,12 +1,7 @@
 use crate::intcode;
 
 pub fn day2(input_path: &str) {
-    let rom = std::fs::read_to_string(input_path)
-        .unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e))
-        .trim()
-        .split(',')
-        .map(|x| x.parse::<i32>().unwrap())
-        .collect::<Vec<i32>>();
+    let rom = intcode::load_program(input_path);
 
     let mut ram = rom.clone();
     ram[1] = 12;

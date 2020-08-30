@@ -2,12 +2,7 @@ use crate::intcode;
 use std::collections::VecDeque;
 
 pub fn day5(input_path: &str) {
-    let rom = std::fs::read_to_string(input_path)
-        .unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e))
-        .trim()
-        .split(',')
-        .map(|x| x.parse::<i32>().unwrap())
-        .collect::<Vec<i32>>();
+    let rom = intcode::load_program(input_path);
 
     let ram = rom.clone();
     let mut computer = intcode::Computer::new(ram);

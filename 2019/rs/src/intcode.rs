@@ -15,6 +15,7 @@ const POSITION: i32 = 0;
 pub struct Computer {
     pub ram: Vec<i32>,
     pub outputs: VecDeque<i32>,
+    pub state: State,
     pc: usize,
 }
 
@@ -23,33 +24,44 @@ struct Instruction {
     modes: [i32; 3],
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum State {
+    Running,
+    WaitingForInput,
+    Halted,
+}
+
 impl Computer {
     pub fn new(ram: Vec<i32>) -> Computer {
         Computer {
             ram: ram,
             outputs: VecDeque::new(),
+            state: State::Running,
             pc: 0,
         }
     }
 
-    pub fn run(&mut self) {
+    pub fn run(&mut self) -> State {
         let mut empty = VecDeque::new();
-        self.run_with(&mut empty);
+        self.run_with(&mut empty)
     }
 
-    pub fn run_with(&mut self, inputs: &mut VecDeque<i32>) {
-        loop {
+    pub fn run_with(&mut self, inputs: &mut VecDeque<i32>) -> State {
+        assert_ne!(self.state, State::Halted);
+        self.state = loop {
             let instruction = Computer::decode_instruction(self.ram[self.pc]);
             match instruction.opcode {
                 ADD => self.run_binary_instruction(&instruction, |x, y| x + y),
                 MUL => self.run_binary_instruction(&instruction, |x, y| x * y),
-                INPUT => {
-                    let x = inputs.pop_front().unwrap();
-                    let dst = self.ram[self.pc + 1] as usize;
-                    assert_eq!(instruction.modes[0], POSITION);
-                    self.ram[dst] = x;
-                    self.pc += 2;
-                }
+                INPUT => match inputs.pop_front() {
+                    Some(x) => {
+                        let dst = self.ram[self.pc + 1] as usize;
+                        assert_eq!(instruction.modes[0], POSITION);
+                        self.ram[dst] = x;
+                        self.pc += 2;
+                    }
+                    None => break State::WaitingForInput,
+                },
                 OUTPUT => {
                     let x = self.get_parameter(self.pc + 1, instruction.modes[0]);
                     self.outputs.push_back(x);
@@ -59,10 +71,11 @@ impl Computer {
                 JUMP_FALSE => self.run_jump_instruction(&instruction, |x| x == 0),
                 LESS_THAN => self.run_binary_instruction(&instruction, |x, y| (x < y) as i32),
                 EQUAL => self.run_binary_instruction(&instruction, |x, y| (x == y) as i32),
-                HALT => break,
+                HALT => break State::Halted,
                 _ => panic!("Unsupported opcode {}", self.ram[self.pc]),
             }
-        }
+        };
+        self.state
     }
 
     fn run_binary_instruction(&mut self, instruction: &Instruction, f: fn(i32, i32) -> i32) {
@@ -98,4 +111,13 @@ impl Computer {
         }
         x
     }
+}
+
+pub fn load_program(input_path: &str) -> Vec<i32> {
+    std::fs::read_to_string(input_path)
+        .unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e))
+        .trim()
+        .split(',')
+        .map(|x| x.parse::<i32>().unwrap())
+        .collect::<Vec<i32>>()
 }
