@@ -1,0 +1,5 @@
+.stack-work/
+stack.yaml.lock
+aoc20.cabal
+*~
+**/*.swp
