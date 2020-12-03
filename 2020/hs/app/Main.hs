@@ -3,9 +3,10 @@ module Main where
 import System.Environment   
 
 import Day1
+import Day2
 
 days :: [String -> IO ()]
-days = [day1]
+days = [day1, day2]
 
 main :: IO ()
 main = do
