@@ -1,12 +1,8 @@
-use std::fs::File;
-use std::io::{self, BufRead};
+use crate::utils;
 
 pub fn day3(input_path: &str) {
-    let file =
-        File::open(input_path).unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e));
-    let map: Vec<Vec<bool>> = io::BufReader::new(file)
-        .lines()
-        .map(|l| parse_row(&l.unwrap()))
+    let map: Vec<Vec<bool>> = utils::input_lines(input_path)
+        .map(|l| parse_row(&l))
         .collect();
     let width = map[0].len();
     for row in map.iter() {

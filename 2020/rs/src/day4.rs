@@ -1,6 +1,6 @@
 use itertools::Itertools;
-use std::fs::File;
-use std::io::{self, BufRead};
+
+use crate::utils;
 
 #[derive(Debug)]
 struct Data {
@@ -126,12 +126,7 @@ fn parse_data(line: &str, data: &mut Data) {
 }
 
 pub fn day4(input_path: &str) {
-    let file =
-        File::open(input_path).unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e));
-    let lines: Vec<String> = io::BufReader::new(file)
-        .lines()
-        .map(|l| l.unwrap())
-        .collect();
+    let lines: Vec<String> = utils::input_lines(input_path).collect();
     let mut data = Data::new();
     let mut num_has_required_fields = 0;
     let mut num_valid = 0;

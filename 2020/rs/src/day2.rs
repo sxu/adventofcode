@@ -1,6 +1,6 @@
 use itertools::Itertools;
-use std::fs::File;
-use std::io::{self, BufRead};
+
+use crate::utils;
 
 struct PolicyAndPassword {
     c: char,
@@ -37,11 +37,8 @@ fn is_valid2(p: &PolicyAndPassword) -> bool {
 }
 
 pub fn day2(input_path: &str) {
-    let file =
-        File::open(input_path).unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e));
-    let xs: Vec<PolicyAndPassword> = io::BufReader::new(file)
-        .lines()
-        .map(|l| parse_input(&l.unwrap()))
+    let xs: Vec<PolicyAndPassword> = utils::input_lines(input_path)
+        .map(|l| parse_input(&l))
         .collect();
     assert_eq!(xs.iter().filter(|x| is_valid1(x)).count(), 500);
     assert_eq!(xs.iter().filter(|x| is_valid2(x)).count(), 313);

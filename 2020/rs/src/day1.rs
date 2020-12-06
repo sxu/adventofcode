@@ -1,16 +1,12 @@
 use std::collections::HashSet;
-use std::fs::File;
-use std::io::{self, BufRead};
 use std::iter::FromIterator;
 
+use crate::utils;
+
 pub fn day1(input_path: &str) {
-    let file =
-        File::open(input_path).unwrap_or_else(|e| panic!("Failed to open {}: {}", input_path, e));
-    let xs = io::BufReader::new(file)
-        .lines()
+    let xs = utils::input_lines(input_path)
         .map(|l| {
-            l.unwrap_or_else(|e| panic!("Failed to read line: {}", e))
-                .trim()
+            l.trim()
                 .parse::<i32>()
                 .unwrap_or_else(|e| panic!("Failed to parse integer {}", e))
         })
