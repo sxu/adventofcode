@@ -1,5 +1,6 @@
-use crate::utils;
 use std::collections::HashSet;
+
+use crate::utils;
 
 pub fn day6(input_path: &str) {
     let lines = utils::input_lines(input_path);
