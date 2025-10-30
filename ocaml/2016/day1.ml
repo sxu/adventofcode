@@ -11,20 +11,11 @@ type direction =
   | West
   | North
 
-module Int_pair = struct
-  module T = struct
-    type t = int * int [@@deriving compare, hash, sexp_of]
-  end
-
-  include T
-  include Comparator.Make (T)
-end
-
 type state =
   { x : int
   ; y : int
   ; dir : direction
-  ; past_coordinates : Set.M(Int_pair).t
+  ; past_coordinates : (int * int) Set.Poly.t
   ; first_revisited_coordinate : (int * int) option
   }
 
@@ -86,7 +77,7 @@ let solve fname =
     { x = 0
     ; y = 0
     ; dir = North
-    ; past_coordinates = Set.empty (module Int_pair)
+    ; past_coordinates = Set.Poly.empty
     ; first_revisited_coordinate = None
     }
   in
