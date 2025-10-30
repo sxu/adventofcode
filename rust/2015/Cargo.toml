@@ -1,0 +1,11 @@
+[package]
+name = "aoc15"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chumsky = {workspace = true}
+either = {workspace = true}
+itertools = {workspace = true}
+md5 = {workspace = true}
+serde_json = {workspace = true}
