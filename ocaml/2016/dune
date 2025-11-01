@@ -2,4 +2,4 @@
  (name main)
  (preprocess
   (pps ppx_jane ppx_show))
- (libraries base stdio str ppx_show.runtime))
+ (libraries angstrom base stdio str ppx_show.runtime))
