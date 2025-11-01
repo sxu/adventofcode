@@ -1,7 +1,9 @@
 open Base
 open Stdio
 
-let all_days = [| Day1.solve; Day2.solve; Day3.solve; Day4.solve |]
+let all_days =
+  [| Day1.solve; Day2.solve; Day3.solve; Day4.solve; Day5.solve; Day6.solve |]
+;;
 
 let exec_day day =
   let day_str = Int.to_string @@ (day + 1) in

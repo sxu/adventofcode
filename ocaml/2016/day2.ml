@@ -70,6 +70,6 @@ let solve fname =
     c, code ^ String.make 1 c
   in
   let _, code2 = List.fold instrs ~init:('5', "") ~f in
-  assert (String.equal code1 "56855");
-  assert (String.equal code2 "B3C27")
+  assert (String.(code1 = "56855"));
+  assert (String.(code2 = "B3C27"))
 ;;

@@ -46,7 +46,7 @@ let compute_checksum name =
 
 let is_real room =
   let checksum = compute_checksum room.name in
-  String.equal room.checksum checksum
+  String.(room.checksum = checksum)
 ;;
 
 let a_ascii = Char.to_int 'a'
@@ -69,7 +69,7 @@ let solve fname =
   let decipered_rooms = List.map real_rooms ~f:decipher_room in
   let target_room =
     List.find_exn decipered_rooms ~f:(fun r ->
-      String.equal r.name "northpole object storage")
+      String.(r.name = "northpole object storage"))
   in
   assert (sector_id_sum = 158835);
   assert (target_room.sector_id = 993)
