@@ -15,18 +15,10 @@ let solve fname =
   let char_cnt_alists = Array.map char_cnt_maps ~f:H.to_alist in
   let compare (_, cnt1) (_, cnt2) = Int.compare cnt1 cnt2 in
   let compare_rev (_, cnt1) (_, cnt2) = Int.compare cnt2 cnt1 in
-  let least_freq_char alist = List.sort alist ~compare |> List.hd_exn in
-  let most_freq_char alist = List.sort alist ~compare:compare_rev |> List.hd_exn in
-  let msg1 =
-    Array.map char_cnt_alists ~f:most_freq_char
-    |> Array.map ~f:(fun (c, _) -> c)
-    |> String.of_array
-  in
-  let msg2 =
-    Array.map char_cnt_alists ~f:least_freq_char
-    |> Array.map ~f:(fun (c, _) -> c)
-    |> String.of_array
-  in
+  let least_freq_char alist = List.sort alist ~compare |> List.hd_exn |> fst in
+  let most_freq_char alist = List.sort alist ~compare:compare_rev |> List.hd_exn |> fst in
+  let msg1 = Array.map char_cnt_alists ~f:most_freq_char |> String.of_array in
+  let msg2 = Array.map char_cnt_alists ~f:least_freq_char |> String.of_array in
   assert (String.(msg1 = "gyvwpxaz"));
   assert (String.(msg2 = "jucfoary"))
 ;;

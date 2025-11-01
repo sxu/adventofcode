@@ -41,5 +41,5 @@ let solve fname =
   in
   let triangles = List.map lines ~f:parse_line in
   assert (count_valid1 triangles = 982);
-  print_endline (Printf.sprintf "%d" (count_valid2 triangles))
+  assert (count_valid2 triangles = 1826);
 ;;
